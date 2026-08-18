@@ -1,41 +1,56 @@
-DYAA Canta Math Master v5 - Local Safe
+DYAA Canta Math Master v6
 
-当前已加入
-==========
-- 2009 / Year 10
-- 2010 / Year 10
-- 2015 / Year 10
-
-使用
-====
-1. 解压整个文件夹。
-2. 直接双击 index.html。
-3. 选择 Year。
-4. 选择 Grade。
-5. 选择 Exercise Mode 或 Run Mode。
-
-统一规则
-========
-- Exercise Mode 和 Run Mode 都计时。
-- 每答错一次：+1 Run Penalty。
+新增：
+- 每次 Check Answer 都算 1 Run，不管答对还是答错。
 - 默认 1 Run = 30 秒。
-- Run Mode 答错后停留在当前题继续做。
-- Run Mode 必须答对当前题才进入下一题。
-- Pause / Resume 不跳题，暂停时间不计入 Actual Time。
-- Final Score Time = Actual Time + Run Penalties × Run Time。
+- Final Score Time = Actual Time + Total Runs × Run Time。
+- Run Mode 记录“第一次尝试做错”的题号，每题只记录一次。
+- 最终结果自动提交到 Google Sheet 的 `Canta Math` 工作表。
 
-当前题库文件
-============
-questions/
-  2009_Y10_questions.js / .html
-  2010_Y10_questions.js / .html
-  2015_Y10_questions.js / .html
+Google Sheet 字段：
+Received At
+Student
+Year
+Grade
+Mode
+Actual Time
+Total Runs
+Run Seconds
+Run Time Added
+Final Score Time
+Wrong Attempts
+Run Mode - Wrong on First Attempt
 
-answers/
-  2009_Y10_answers.js / .html
-  2010_Y10_answers.js / .html
-  2015_Y10_answers.js / .html
+例如第一次做错 Q2、Q7、Q15：
+Q2, Q7, Q15
 
-以后新增年份时，继续加入对应 questions.js / answers.js，
-并在 catalog.js 增加对应年份和年级即可。
-index.html 不需要按年份重复制作。
+Google Sheet 设置：
+1. 打开你的 Google Sheet。
+2. Extensions -> Apps Script。
+3. 把 `Google_Sheet_Code.gs` 内容复制进去。
+4. Deploy -> New deployment -> Web app。
+5. Execute as: Me。
+6. Who has access: Anyone。
+7. Deploy 后复制 `/exec` URL。
+8. 打开 `settings.js`，填写：
+   window.CANTAMATH_GOOGLE_SHEET_URL = "你的 /exec URL";
+9. 保存。
+
+当前题库：
+2009 / Year 10
+2010 / Year 10
+2015 / Year 10
+
+
+v6.1 Result 页面规则
+===================
+Exercise Mode:
+- 不需要所有题都答对才能结束。
+- 页面有 `Finish & View Results`。
+- 点击后会显示当前成绩，并自动上传 Google Sheet。
+- 没有按 `Check Answer` 的题不会增加 Run。
+- 已按 `Check Answer` 的每次提交（答对或答错）都增加 1 Run。
+
+Run Mode:
+- 仍然必须按顺序答对每一道题。
+- Q20 答对后自动进入 Results 页面并上传 Google Sheet。

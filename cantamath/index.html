@@ -95,6 +95,7 @@ button:disabled{opacity:.55!important;cursor:not-allowed!important}
   </div>
 </div>
 
+<script src="settings.js"></script>
 <script src="catalog.js"></script>
 <script>
 const DEFAULT_RUN_SECONDS=30;
@@ -106,7 +107,7 @@ let bankAnswers=null;
 let loadedScripts=new Set();
 
 let questions=[],userAnswers=[],selectedMode="exercise",studentName="",runSeconds=DEFAULT_RUN_SECONDS;
-let currentQuestionIndex=0,solved=[],attempts=[],unlocked=0,wrongAttempts=0,penaltyRuns=0;
+let currentQuestionIndex=0,solved=[],attempts=[],unlocked=0,wrongAttempts=0,totalRuns=0,firstAttemptWrong=[];
 let quizStartTime=null,quizEndTime=null,paused=false,pauseStart=null,totalPausedMs=0,timerId=null;
 let activeQuestionIndex=null,questionStartTime=null,questionPauseStart=null,questionPausedMs=0,questionStats=[];
 let finalResults=null;
@@ -155,12 +156,12 @@ function showStartScreen(){
 
       <div class="rule-box">
         <strong>Both modes are timed.</strong><br>
-        Every incorrect answer adds <strong>1 Run Penalty</strong>.<br>
+        Every checked answer counts as <strong>1 Run</strong>, whether it is correct or incorrect.<br>
         Default Run Time = <strong>30 seconds</strong>.<br>
-        <strong>Final Score Time = Actual Time + Run Penalties × Run Time.</strong><br><br>
+        <strong>Final Score Time = Actual Time + Total Runs × Run Time.</strong><br><br>
         <strong>Exercise Mode:</strong> students can move freely between questions.<br>
         <strong>Run Mode:</strong> starts at Question 1 and moves forward only after a correct answer.
-        A wrong answer stays on the same question and adds one Run Penalty.
+        A wrong answer stays on the same question. Every submitted answer, correct or incorrect, counts as one Run.
       </div>
 
       <div class="select-grid">
@@ -299,13 +300,13 @@ function getRawElapsedMs(){
   const end=quizEndTime?quizEndTime.getTime():(paused&&pauseStart?pauseStart:Date.now());
   return Math.max(0,end-quizStartTime.getTime()-totalPausedMs);
 }
-function getPenaltyMs(){return penaltyRuns*runSeconds*1000}
-function getFinalScoreMs(){return getRawElapsedMs()+getPenaltyMs()}
+function getRunTimeMs(){return totalRuns*runSeconds*1000}
+function getFinalScoreMs(){return getRawElapsedMs()+getRunTimeMs()}
 
 function renderTimerBlock(){
   return `<div class="timer-controls">
     <div class="timer" id="rawTimer">Time: ${formatDuration(getRawElapsedMs())}</div>
-    <div class="penalty-chip" id="runTimer">Run Penalty: ${penaltyRuns} × ${runSeconds}s</div>
+    <div class="penalty-chip" id="runTimer">Runs: ${totalRuns} × ${runSeconds}s</div>
     <div class="total-chip" id="totalTimer">Total: ${formatDuration(getFinalScoreMs())}</div>
     <button id="pauseBtn" class="pause-btn ${paused?"resume":""}">${paused?"Resume":"Pause"}</button>
   </div>`;
@@ -313,7 +314,7 @@ function renderTimerBlock(){
 function updateTimers(){
   const a=document.getElementById("rawTimer"),b=document.getElementById("runTimer"),c=document.getElementById("totalTimer");
   if(a)a.textContent=`Time: ${formatDuration(getRawElapsedMs())}`;
-  if(b)b.textContent=`Run Penalty: ${penaltyRuns} × ${runSeconds}s`;
+  if(b)b.textContent=`Runs: ${totalRuns} × ${runSeconds}s`;
   if(c)c.textContent=`Total: ${formatDuration(getFinalScoreMs())}`;
 }
 function startTimer(){stopTimer();timerId=setInterval(updateTimers,250)}
@@ -353,7 +354,7 @@ function startQuiz(){
   const n=questions.length;
   userAnswers=Array(n).fill("");solved=Array(n).fill(false);attempts=Array(n).fill(0);
   questionStats=Array(n).fill(null).map(()=>({wrong:0,timeMs:0}));
-  currentQuestionIndex=0;unlocked=0;wrongAttempts=0;penaltyRuns=0;
+  currentQuestionIndex=0;unlocked=0;wrongAttempts=0;totalRuns=0;firstAttemptWrong=Array(n).fill(false);
   quizStartTime=new Date();quizEndTime=null;paused=false;pauseStart=null;totalPausedMs=0;
   activeQuestionIndex=null;questionStartTime=null;questionPauseStart=null;questionPausedMs=0;finalResults=null;
   document.getElementById("pageTitle").textContent=`Canta Math ${selectedSet.year} - ${selectedSet.label||normalizeGradeDisplay(selectedSet.grade)}`;
@@ -401,7 +402,8 @@ function renderQuestion(){
 
   const nav=selectedMode==="exercise"
     ? `<button class="btn-prev" id="prevBtn" ${i===0||paused?"disabled":""}>Previous</button>
-       <button class="btn-next" id="nextBtn" ${i===questions.length-1||paused?"disabled":""}>Next</button>`
+       <button class="btn-next" id="nextBtn" ${i===questions.length-1||paused?"disabled":""}>Next</button>
+       <button class="btn-check" id="finishBtn" ${paused?"disabled":""} style="background:#607d8b;">Finish & View Results</button>`
     : `<span></span>`;
 
   quizContent.innerHTML=`
@@ -417,7 +419,7 @@ function renderQuestion(){
       placeholder="Enter your answer" ${paused||solved[i]?"disabled":""}>
 
     <div id="checkResult">${solved[i]?"Correct.":""}</div>
-    <div class="small-note">Every incorrect attempt adds 1 Run Penalty = ${runSeconds} seconds.</div>
+    <div class="small-note">Every checked answer counts as 1 Run = ${runSeconds} seconds.</div>
 
     <div class="button-row">
       ${nav}
@@ -437,24 +439,106 @@ function renderQuestion(){
   const next=document.getElementById("nextBtn");
   if(next)next.onclick=()=>{saveInput();finishQuestionTimer(i);currentQuestionIndex++;renderQuestion()};
 
+  const finishBtn=document.getElementById("finishBtn");
+  if(finishBtn)finishBtn.onclick=()=>{
+    if(paused)return;
+    saveInput();
+    finishQuestionTimer(i);
+
+    const unresolved=solved.filter(v=>!v).length;
+    const message=unresolved>0
+      ? `You still have ${unresolved} question${unresolved===1?"":"s"} not solved correctly. Finish now and view results?`
+      : "Finish now and view results?";
+
+    if(confirm(message)) finishQuiz();
+  };
+
   document.getElementById("checkBtn").onclick=()=>{
     if(paused||solved[i])return;
     saveInput();
     const raw=(userAnswers[i]||"").trim(),result=document.getElementById("checkResult");
     if(!raw){result.textContent="Please enter an answer first.";result.style.color="#e65100";return}
 
-    if(isCorrectAnswer(raw,q.answer)){
-      finishQuestionTimer(i);solved[i]=true;result.textContent="Correct!";result.style.color="#2e7d32";
+    const isFirstAttempt=(attempts[i]===0 && questionStats[i].wrong===0);
+    totalRuns++;
+    const ok=isCorrectAnswer(raw,q.answer);
+
+    if(ok){
+      finishQuestionTimer(i);solved[i]=true;
+      result.textContent=`Correct! +1 Run (+${runSeconds}s).`;
+      result.style.color="#2e7d32";
+      updateTimers();
       if(selectedMode==="run")unlocked=Math.max(unlocked,i+1);
       const n=nextUnsolved(i);
       if(n>=0){currentQuestionIndex=n;if(selectedMode==="run")unlocked=Math.max(unlocked,n);setTimeout(renderQuestion,350)}
       else setTimeout(finishQuiz,350);
     }else{
-      attempts[i]++;questionStats[i].wrong++;wrongAttempts++;penaltyRuns++;
-      result.textContent=`Incorrect. +1 Run Penalty (+${runSeconds}s). Try again.`;
+      if(selectedMode==="run" && isFirstAttempt) firstAttemptWrong[i]=true;
+      attempts[i]++;questionStats[i].wrong++;wrongAttempts++;
+      result.textContent=`Incorrect. +1 Run (+${runSeconds}s). Try again.`;
       result.style.color="#c62828";updateTimers();renderSidebar();input.select();input.focus();
     }
   };
+}
+
+function getFirstWrongQuestionText(){
+  if(selectedMode!=="run") return "";
+  const qs=[];
+  firstAttemptWrong.forEach((v,i)=>{if(v)qs.push(`Q${i+1}`)});
+  return qs.length?qs.join(", "):"None";
+}
+
+async function sendResultToGoogleSheet(){
+  const status=document.getElementById("sheetStatus");
+  const url=String(window.CANTAMATH_GOOGLE_SHEET_URL||"").trim();
+
+  if(!url){
+    if(status){
+      status.textContent="Google Sheet is not configured yet. Add the Apps Script /exec URL to settings.js.";
+      status.style.color="#e65100";
+      status.style.background="#fff8e1";
+      status.style.borderColor="#ffe0a3";
+    }
+    return;
+  }
+
+  const payload={
+    sheet:String(window.CANTAMATH_SHEET_TAB||"Canta Math"),
+    timestamp:new Date().toISOString(),
+    student:studentName,
+    year:selectedSet.year,
+    grade:selectedSet.label||normalizeGradeDisplay(selectedSet.grade),
+    mode:selectedMode==="run"?"Run":"Exercise",
+    actualTime:formatDuration(getRawElapsedMs()),
+    totalRuns:totalRuns,
+    runSeconds:runSeconds,
+    runTimeAdded:formatDuration(getRunTimeMs()),
+    finalScoreTime:formatDuration(getFinalScoreMs()),
+    wrongAttempts:wrongAttempts,
+    firstWrongQuestions:selectedMode==="run"?getFirstWrongQuestionText():""
+  };
+
+  try{
+    await fetch(url,{
+      method:"POST",
+      mode:"no-cors",
+      headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
+      body:new URLSearchParams(payload)
+    });
+    if(status){
+      status.textContent="Google Sheet submission sent.";
+      status.style.color="#2e7d32";
+      status.style.background="#edf9ef";
+      status.style.borderColor="#c8e6c9";
+    }
+  }catch(err){
+    if(status){
+      status.textContent="Could not send to Google Sheet. Check settings.js and your internet connection.";
+      status.style.color="#c62828";
+      status.style.background="#fff2f2";
+      status.style.borderColor="#ffcdd2";
+    }
+  }
 }
 
 function finishQuiz(){
@@ -472,12 +556,14 @@ function finishQuiz(){
       <div class="summary-card"><div class="k">Mode</div><div class="v">${selectedMode.toUpperCase()}</div></div>
       <div class="summary-card"><div class="k">Correct</div><div class="v">${correctCount()} / ${questions.length}</div></div>
       <div class="summary-card"><div class="k">Actual Time</div><div class="v">${formatDuration(getRawElapsedMs())}</div></div>
-      <div class="summary-card"><div class="k">Run Penalty</div><div class="v">${penaltyRuns} × ${runSeconds}s</div></div>
+      <div class="summary-card"><div class="k">Total Runs</div><div class="v">${totalRuns} × ${runSeconds}s</div></div>
       <div class="summary-card"><div class="k">Final Score</div><div class="v">${formatDuration(getFinalScoreMs())}</div></div>
     </div>
-    <p><strong>Penalty Time:</strong> ${formatDuration(getPenaltyMs())}<br>
+    <p><strong>Run Time Added:</strong> ${formatDuration(getRunTimeMs())}<br>
        <strong>Wrong Attempts:</strong> ${wrongAttempts}<br>
-       <strong>Formula:</strong> Final Score Time = Actual Time + Run Penalties × ${runSeconds} seconds</p>
+       ${selectedMode==="run"?`<strong>Wrong on First Attempt:</strong> ${getFirstWrongQuestionText()}<br>`:""}
+       <strong>Formula:</strong> Final Score Time = Actual Time + Total Runs × ${runSeconds} seconds</p>
+    <div id="sheetStatus" class="status">Sending final result to Google Sheet...</div>
     <table class="review-table">
       <tr><th>#</th><th>Knowledge Point</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th><th>Run Penalties</th><th>Question Time</th></tr>
       ${finalResults.map(r=>`<tr class="${r.result==="Correct"?"correct-answer":"incorrect-answer"}">
@@ -491,6 +577,7 @@ function finishQuiz(){
 
   document.getElementById("saveResultBtn").onclick=saveResultTxt;
   document.getElementById("backBtn").onclick=showStartScreen;
+  sendResultToGoogleSheet();
 }
 
 function saveResultTxt(){
@@ -500,12 +587,13 @@ function saveResultTxt(){
     `Paper: ${selectedSet.year} ${selectedSet.label||normalizeGradeDisplay(selectedSet.grade)}`,
     `Mode: ${selectedMode.toUpperCase()}`,
     `Actual Time: ${formatDuration(getRawElapsedMs())}`,
-    `Penalty Runs: ${penaltyRuns}`,
+    `Total Runs: ${totalRuns}`,
     `Run Time: ${runSeconds} seconds`,
-    `Penalty Time: ${formatDuration(getPenaltyMs())}`,
+    `Run Time Added: ${formatDuration(getRunTimeMs())}`,
     `Final Score Time: ${formatDuration(getFinalScoreMs())}`,
     `Correct: ${correctCount()} / ${questions.length}`,
     `Wrong Attempts: ${wrongAttempts}`,
+    `Wrong on First Attempt: ${selectedMode==="run"?getFirstWrongQuestionText():""}`,
     "",
     "Q#, Knowledge Point, Your Answer, Correct Answer, Result, Run Penalties, Question Time"
   ];
