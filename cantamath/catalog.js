@@ -28,5 +28,15 @@ window.CANTAMATH_CATALOG = [
     answersScript: "answers/2009_Y10_answers.js",
     questionsView: "questions/2009_Y10_questions.html",
     answersView: "answers/2009_Y10_answers.html"
+  },
+  {
+    year: 2008,
+    grade: "Y10",
+    label: "Year 10",
+    key: "2008_Y10",
+    questionsScript: "questions/2008_Y10_questions.js",
+    answersScript: "answers/2008_Y10_answers.js",
+    questionsView: "questions/2008_Y10_questions.html",
+    answersView: "answers/2008_Y10_answers.html"
   }
 ];
