@@ -73,4 +73,17 @@ window.ICAS_CATALOG = [
     questionGlobal: "ICAS_2021_Y7_E_QUESTIONS",
     answerGlobal: "ICAS_2021_Y7_E_ANSWERS"
   }
+  ,{
+    key: "2021_Y4_B",
+    year: 2021,
+    paper: "B",
+    label: "2021 Year 4 Mathematics Paper B",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "questions/2021_Y4_B_questions.js",
+    answerScript: "answers/2021_Y4_B_answers.js",
+    questionGlobal: "ICAS_2021_Y4_B_QUESTIONS",
+    answerGlobal: "ICAS_2021_Y4_B_ANSWERS"
+  }
+
 ];

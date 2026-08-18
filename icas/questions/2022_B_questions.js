@@ -1,5 +1,5 @@
 window.ICAS_2022_B_QUESTIONS = [
-  { id: 1, type: "text", image: "images/2022_B/q1.png", hint: "Type the three toy names from lightest to heaviest, separated by commas." },
+  { id: 1, type: "text", image: "images/2022_B/q1.png", hint: "Use short codes: R = rabbit, B = bear, C = clown. Type the order only, for example RBC." },
   { id: 2, type: "mcq", image: "images/2022_B/q2.png" },
   { id: 3, type: "text", image: "images/2022_B/q3.png", hint: "Type the place name." },
   { id: 4, type: "mcq", image: "images/2022_B/q4.png" },
@@ -12,13 +12,13 @@ window.ICAS_2022_B_QUESTIONS = [
   { id: 11, type: "mcq", image: "images/2022_B/q11.png" },
   { id: 12, type: "text", image: "images/2022_B/q12.png", hint: "Type the power level shown by the correct indicator." },
   { id: 13, type: "mcq", image: "images/2022_B/q13.png" },
-  { id: 14, type: "text", image: "images/2022_B/q14.png", hint: "Type the four animals from least likely to most likely, separated by commas." },
+  { id: 14, type: "text", image: "images/2022_B/q14.png", hint: "Use short codes: K = kitten, P = pony, R = rabbit, D = dog. Type the order only, for example KPRD." },
   { id: 15, type: "mcq", image: "images/2022_B/q15.png" },
   { id: 16, type: "mcq", image: "images/2022_B/q16.png" },
   { id: 17, type: "text", image: "images/2022_B/q17.png", hint: "Type the amount of money as a number only." },
   { id: 18, type: "mcq", image: "images/2022_B/q18.png" },
   { id: 19, type: "mcq", image: "images/2022_B/q19.png" },
-  { id: 20, type: "text", image: "images/2022_B/q20.png", hint: "Type the four litter types from least to most, separated by commas." },
+  { id: 20, type: "text", image: "images/2022_B/q20.png", hint: "Use short codes: C = can, B = bottle, G = plastic bag, P = piece of paper. Type the order only, for example CBGP." },
   { id: 21, type: "mcq", image: "images/2022_B/q21.png" },
   { id: 22, type: "text", image: "images/2022_B/q22.png", hint: "Number the four shapes 1–4 from left to right, then type the two matching shape numbers separated by a comma." },
   { id: 23, type: "text", image: "images/2022_B/q23.png", hint: "Type the final grid square, for example E6." },
@@ -29,7 +29,7 @@ window.ICAS_2022_B_QUESTIONS = [
   { id: 28, type: "text", image: "images/2022_B/q28.png", hint: "Label the six shapes A–F from left to right, top row then bottom row. Type all correct letters separated by commas." },
   { id: 29, type: "text", image: "images/2022_B/q29.png", hint: "Type the three-digit number." },
   { id: 30, type: "mcq", image: "images/2022_B/q30.png" },
-  { id: 31, type: "text", image: "images/2022_B/q31.png", hint: "Type all items in Chloe's bag, separated by commas." },
+  { id: 31, type: "text", image: "images/2022_B/q31.png", hint: "Use short codes: A = apple, R = rice, B = butter, C = cheese, P = pineapple. Type the letters only, for example ARBCP." },
   { id: 32, type: "mcq", image: "images/2022_B/q32.png" },
   { id: 33, type: "mcq", image: "images/2022_B/q33.png" },
   { id: 34, type: "text", image: "images/2022_B/q34.png", hint: "Type the number of parrots." },
@@ -38,5 +38,5 @@ window.ICAS_2022_B_QUESTIONS = [
   { id: 37, type: "text", image: "images/2022_B/q37.png", hint: "Type the number of small squares." },
   { id: 38, type: "text", image: "images/2022_B/q38.png", hint: "Type the number of seeds." },
   { id: 39, type: "text", image: "images/2022_B/q39.png", hint: "Type the minimum number of sunflowers." },
-  { id: 40, type: "text", image: "images/2022_B/q40.png", hint: "Type the five missing cards from left to right, separated by commas." }
+  { id: 40, type: "text", image: "images/2022_B/q40.png", hint: "Use short codes: L = lightning, S = sun, T = star. Type the five letters from left to right, for example LSTSL." }
 ];
