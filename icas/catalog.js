@@ -35,5 +35,29 @@ window.ICAS_CATALOG = [
     answerScript: "answers/2020_Y6_D_answers.js",
     questionGlobal: "ICAS_2020_Y6_D_QUESTIONS",
     answerGlobal: "ICAS_2020_Y6_D_ANSWERS"
+  },
+  {
+    key: "2022_B",
+    year: 2022,
+    paper: "B",
+    label: "2022 Mathematics Grade B",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "questions/2022_B_questions.js",
+    answerScript: "answers/2022_B_answers.js",
+    questionGlobal: "ICAS_2022_B_QUESTIONS",
+    answerGlobal: "ICAS_2022_B_ANSWERS"
+  }
+  ,{
+    key: "2005_C",
+    year: 2005,
+    paper: "C",
+    label: "2005 Mathematics Grade C",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "questions/2005_C_questions.js",
+    answerScript: "answers/2005_C_answers.js",
+    questionGlobal: "ICAS_2005_C_QUESTIONS",
+    answerGlobal: "ICAS_2005_C_ANSWERS"
   }
 ];
