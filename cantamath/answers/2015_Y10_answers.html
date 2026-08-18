@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DYAA Canta Math 2015 Year 10 - Answers</title>
+<style>
+body{font-family:"Segoe UI",Tahoma,sans-serif;background:#f4f4f9;margin:0;padding:20px;color:#333}
+.wrap{max-width:720px;margin:20px auto;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.08);padding:24px}
+h1{color:#0d47a1} table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #ddd;padding:9px;text-align:left} th{background:#eef5ff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>DYAA Canta Math 2015 Year 10 - Answer Bank</h1>
+<table><thead><tr><th>Question</th><th>Answer</th></tr></thead><tbody id="rows"></tbody></table>
+</div>
+<script src="2015_Y10_answers.js"></script>
+<script>
+const rows=document.getElementById("rows");
+(window.CANTAMATH_2015_Y10_ANSWERS||[]).forEach((a,i)=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML=`<td>Q${i+1}</td><td>${a}</td>`;
+  rows.appendChild(tr);
+});
+</script>
+</body>
+</html>

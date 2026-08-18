@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>DYAA Canta Math Catalog</title></head>
+<body>
+<script>
+const CANTAMATH_CATALOG = [
+  {
+    year: 2015,
+    grade: "Y10",
+    label: "Year 10",
+    key: "2015_Y10",
+    questions: "questions/2015_Y10_questions.html",
+    answers: "answers/2015_Y10_answers.html"
+  }
+];
+
+function sendCatalog() {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: "CANTAMATH_CATALOG", catalog: CANTAMATH_CATALOG }, "*");
+  }
+}
+
+window.addEventListener("message", (event) => {
+  if ((event.data || {}).type === "REQUEST_CANTAMATH_CATALOG") sendCatalog();
+});
+
+sendCatalog();
+</script>
+</body>
+</html>
