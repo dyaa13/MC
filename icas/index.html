@@ -47,28 +47,30 @@ function elapsedSec(){if(!startMs)return 0;const effectiveNow=endMs||((paused&&p
 function remainingSec(){return Math.max(0,timeLimitSec()-elapsedSec())}
 
 function availableYears(){return [...new Set(CATALOG.map(p=>Number(p.year)))].sort((a,b)=>b-a)}
+function availableGrades(){return [...new Set(CATALOG.map(p=>String(p.paper)))].sort((a,b)=>String(a).localeCompare(String(b)))}
 function papersForYear(year){return CATALOG.filter(p=>Number(p.year)===Number(year)).sort((a,b)=>String(a.paper).localeCompare(String(b.paper)))}
-function fillGradeOptions(){
-  const yearSel=document.getElementById('yearSelect'),gradeSel=document.getElementById('gradeSelect');
-  if(!yearSel||!gradeSel)return;
-  const choices=papersForYear(yearSel.value);
-  gradeSel.innerHTML=choices.map(p=>`<option value="${esc(p.paper)}">Grade ${esc(p.paper)}</option>`).join('');
+function yearsForGrade(grade){return CATALOG.filter(p=>String(p.paper)===String(grade)).map(p=>Number(p.year)).filter((v,i,a)=>a.indexOf(v)===i).sort((a,b)=>b-a)}
+function fillYearOptions(){
+  const gradeSel=document.getElementById('gradeSelect'),yearSel=document.getElementById('yearSelect');
+  if(!gradeSel||!yearSel)return;
+  const years=yearsForGrade(gradeSel.value);
+  yearSel.innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
 }
 function showStart(){clearInterval(timerId);submitted=false;autoSubmitted=false;paused=false;pauseStartedMs=0;totalPausedMs=0;pageTitle.textContent='ICAS Mathematics Test';
   if(!CATALOG.length){app.innerHTML='<div class="card">No papers found in catalog.js.</div>';return}
-  const years=availableYears();
-  const yearOptions=years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  const grades=availableGrades();
+  const gradeOptions=grades.map(g=>`<option value="${esc(g)}">Grade ${esc(g)}</option>`).join('');
   app.innerHTML=`<div class="card">
     <div class="grid3">
-      <div class="field"><label>Year</label><select id="yearSelect">${yearOptions}</select></div>
-      <div class="field"><label>Grade</label><select id="gradeSelect"></select></div>
+      <div class="field"><label>Grade</label><select id="gradeSelect">${gradeOptions}</select></div>
+      <div class="field"><label>Year</label><select id="yearSelect"></select></div>
       <div class="field"><label>Student Name</label><input id="studentName" placeholder="Enter student name"></div>
     </div>
     <div class="rule"><strong>Exam format:</strong> one question at a time, one overall timer, and no answer checking during the test. Use <strong>Pause</strong> to stop the timer temporarily without changing questions.<br>At the end, press <strong>Submit Test</strong> to calculate the overall score. The result includes the wrong question numbers and can be sent to the Google Sheet tab <strong>${esc(CONFIG.resultSheetName||'ICAS')}</strong>.</div>
     <button class="primary" id="startBtn">Start Test</button>
   </div>`;
-  document.getElementById('yearSelect').onchange=fillGradeOptions;
-  fillGradeOptions();
+  document.getElementById('gradeSelect').onchange=fillYearOptions;
+  fillYearOptions();
   document.getElementById('startBtn').onclick=startTest;
 }
 
