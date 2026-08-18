@@ -1,0 +1,70 @@
+DYAA Competition - Google Sheet Result 设置（ICAS / Otago 等共用）
+=========================================================
+
+目标
+----
+学生点击 Submit Test 后，把成绩写入同一个 Google Sheet 中对应竞赛的工作表。
+
+当前 ICAS 网站默认写入：
+    ICAS
+
+以后例如 Otago 网站可以写入：
+    Otago
+
+也就是说，同一个 Google Sheet 可以有多个独立的成绩页：
+- ICAS
+- Otago
+- 以后其他竞赛
+
+每个竞赛页都会包含：
+- Timestamp
+- Student
+- Competition
+- Year / Paper
+- Score / Total / Percentage
+- Time Used
+- Wrong Questions（做错题目的序号）
+- Unanswered Questions
+- Auto Submitted
+- Submitted Answers
+
+首次设置
+--------
+1. 打开你要保存所有竞赛成绩的 Google Sheet。
+2. 选择 Extensions -> Apps Script。
+3. 删除默认代码，把本文件 Code.gs 的全部内容复制进去。
+4. 保存。
+5. 点击 Deploy -> New deployment。
+6. Type 选择 Web app。
+7. Execute as: Me。
+8. Who has access: Anyone。
+9. Deploy 后复制 Web app URL（结尾通常是 /exec）。
+10. 打开网页项目根目录的 config.js。
+11. 把 URL 填到：
+
+    googleAppsScriptUrl: "你的 Web app URL"
+
+12. ICAS 网站保持：
+
+    resultSheetName: "ICAS"
+
+13. 保存 config.js。
+14. 双击 index.html 测试，完成考试后点击 Submit Test。
+15. Google Sheet 会自动创建（或使用已有的）ICAS 工作表并写入一行结果。
+
+以后加入 Otago
+-----------
+Otago 网站可以继续使用同一个 Apps Script Web App URL，只需要在 Otago 网站的 config.js 中设置：
+
+    resultSheetName: "Otago"
+
+这样 Otago 的成绩会进入 Otago 工作表，不会混入 ICAS。
+
+如果 Apps Script 不是从目标 Google Sheet 里面创建
+-----------------------------------------------
+请在 Code.gs 顶部把：
+
+const SPREADSHEET_ID = '';
+
+改成目标 Google Sheet 的 ID。
+Sheet ID 是网址 /d/ 和 /edit 之间的那一段。
