@@ -86,4 +86,29 @@ window.ICAS_CATALOG = [
     answerGlobal: "ICAS_2021_Y4_B_ANSWERS"
   }
 
+  ,{
+    key: "2019_Y4_B",
+    year: 2019,
+    paper: "B",
+    label: "2019 Year 4 Mathematics Paper B",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "questions/2019_Y4_B_questions.js",
+    answerScript: "answers/2019_Y4_B_answers.js",
+    questionGlobal: "ICAS_2019_Y4_B_QUESTIONS",
+    answerGlobal: "ICAS_2019_Y4_B_ANSWERS"
+  }
+
+  ,{
+    key: "2020_Y4_B",
+    year: 2020,
+    paper: "B",
+    label: "2020 Year 4 Mathematics Paper B",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "questions/2020_Y4_B_questions.js",
+    answerScript: "answers/2020_Y4_B_answers.js",
+    questionGlobal: "ICAS_2020_Y4_B_QUESTIONS",
+    answerGlobal: "ICAS_2020_Y4_B_ANSWERS"
+  }
 ];
