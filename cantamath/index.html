@@ -242,6 +242,8 @@ function parseNumeric(raw){
 function normalizeTextAnswer(value){
   return String(value||"")
     .toLowerCase()
+    .replace(/π/g,"pi")
+    .replace(/\s*\^\s*/g,"^")
     .replace(/[.,;:_\-]/g," ")
     .replace(/\bat\b/g," ")
     .replace(/\s+/g," ")
