@@ -113,6 +113,20 @@ window.ICAS_CATALOG = [
   }
 
   ,{
+    key: "2011_Y5_C",
+    year: 2011,
+    paper: "C",
+    label: "2011 Year 5 Mathematics Paper C",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "questions/2011_Y5_C_questions.js",
+    answerScript: "answers/2011_Y5_C_answers.js",
+    questionGlobal: "ICAS_2011_Y5_C_QUESTIONS",
+    answerGlobal: "ICAS_2011_Y5_C_ANSWERS"
+  }
+
+
+  ,{
     key: "2012_Y5_C",
     year: 2012,
     paper: "C",
