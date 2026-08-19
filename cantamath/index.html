@@ -127,8 +127,19 @@ function loadClassicScript(src){
 }
 
 function normalizeGradeDisplay(g){return String(g||"").replace(/^Y/i,"Year ")}
-function availableYears(){return [...new Set(CATALOG.map(x=>Number(x.year)))].sort((a,b)=>b-a)}
-function setsForYear(year){return CATALOG.filter(x=>String(x.year)===String(year))}
+function gradeNumber(g){
+  const m=String(g||"").match(/\d+/);
+  return m?Number(m[0]):999;
+}
+function availableGrades(){
+  return [...new Set(CATALOG.map(x=>String(x.grade)))]
+    .sort((a,b)=>gradeNumber(a)-gradeNumber(b));
+}
+function setsForGrade(grade){
+  return CATALOG
+    .filter(x=>String(x.grade)===String(grade))
+    .sort((a,b)=>Number(b.year)-Number(a.year));
+}
 
 function showStartScreen(){
   stopTimer();sidebarEl.style.display="none";selectedSet=null;bankQuestions=null;bankAnswers=null;
@@ -139,14 +150,14 @@ function showStartScreen(){
     return;
   }
 
-  const years=availableYears();
+  const grades=availableGrades();
   quizContent.innerHTML=`
     <div class="start-card">
-      <p>Select the paper, then choose Exercise Mode or Run Mode.</p>
+      <p>Select the Grade first, then choose the Year and mode.</p>
 
       <div class="select-grid">
-        <div class="field"><label for="yearSelect">Year</label><select id="yearSelect"></select></div>
         <div class="field"><label for="gradeSelect">Grade</label><select id="gradeSelect"></select></div>
+        <div class="field"><label for="yearSelect">Year</label><select id="yearSelect"></select></div>
       </div>
 
       <div class="mode-row">
@@ -173,25 +184,34 @@ function showStartScreen(){
       <div id="status" class="status" style="display:none;"></div>
     </div>`;
 
+  const gradeSelect=document.getElementById("gradeSelect");
   const yearSelect=document.getElementById("yearSelect");
-  years.forEach(y=>{
-    const o=document.createElement("option");o.value=y;o.textContent=y;yearSelect.appendChild(o);
+
+  grades.forEach(g=>{
+    const o=document.createElement("option");
+    o.value=g;
+    o.textContent=normalizeGradeDisplay(g);
+    gradeSelect.appendChild(o);
   });
 
-  function refreshGrades(){
-    const gradeSelect=document.getElementById("gradeSelect");
-    gradeSelect.innerHTML="";
-    setsForYear(yearSelect.value).forEach(s=>{
+  function refreshYears(){
+    yearSelect.innerHTML="";
+    setsForGrade(gradeSelect.value).forEach(s=>{
       const o=document.createElement("option");
-      o.value=s.key;o.textContent=s.label||normalizeGradeDisplay(s.grade);gradeSelect.appendChild(o);
+      o.value=s.key;
+      o.textContent=s.year;
+      yearSelect.appendChild(o);
     });
   }
-  yearSelect.value=years[0];refreshGrades();yearSelect.onchange=refreshGrades;
+
+  gradeSelect.value=grades[0];
+  refreshYears();
+  gradeSelect.onchange=refreshYears;
   document.getElementById("startBtn").onclick=loadSelectedPaper;
 }
 
 async function loadSelectedPaper(){
-  const key=document.getElementById("gradeSelect").value;
+  const key=document.getElementById("yearSelect").value;
   selectedSet=CATALOG.find(x=>x.key===key);
   if(!selectedSet)return;
 

@@ -76,3 +76,14 @@ v6.3 新增题库
 
 特殊答案：Q5 4^30；Q10 2^2005；Q18 pi - 2（也接受 π - 2）。
 原有 Google Sheet URL、Run 计分、Result 上传逻辑全部保留。
+
+
+v6.4 首页选择顺序
+================
+选择顺序改为：
+1. Grade
+2. Year
+3. Exercise Mode / Run Mode
+
+以后加入多个年级后，先选 Year 8 / Year 9 / Year 10，
+年份下拉框只显示该年级已有的试卷年份。
