@@ -113,6 +113,20 @@ window.ICAS_CATALOG = [
   }
 
   ,{
+    key: "2009_Y5_C",
+    year: 2009,
+    paper: "C",
+    label: "2009 Year 5 Mathematics Paper C",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "questions/2009_Y5_C_questions.js",
+    answerScript: "answers/2009_Y5_C_answers.js",
+    questionGlobal: "ICAS_2009_Y5_C_QUESTIONS",
+    answerGlobal: "ICAS_2009_Y5_C_ANSWERS"
+  }
+
+
+  ,{
     key: "2011_Y5_C",
     year: 2011,
     paper: "C",
@@ -205,4 +219,45 @@ window.ICAS_CATALOG = [
     questionGlobal: "ICAS_2021_Y6_D_QUESTIONS",
     answerGlobal: "ICAS_2021_Y6_D_ANSWERS"
   }
+
+  ,{
+    key: "2019_Y9_G",
+    year: 2019,
+    paper: "G",
+    label: "2019 Year 9 Mathematics Paper G",
+    questionCount: 39,
+    timeLimitMinutes: 60,
+    questionScript: "questions/2019_Y9_G_questions.js",
+    answerScript: "answers/2019_Y9_G_answers.js",
+    questionGlobal: "ICAS_2019_Y9_G_QUESTIONS",
+    answerGlobal: "ICAS_2019_Y9_G_ANSWERS"
+  }
+
+
+  ,{
+    key: "2020_Y9_G",
+    year: 2020,
+    paper: "G",
+    label: "2020 Year 9 Mathematics Paper G",
+    questionCount: 40,
+    timeLimitMinutes: 60,
+    questionScript: "questions/2020_Y9_G_questions.js",
+    answerScript: "answers/2020_Y9_G_answers.js",
+    questionGlobal: "ICAS_2020_Y9_G_QUESTIONS",
+    answerGlobal: "ICAS_2020_Y9_G_ANSWERS"
+  }
+
+  ,{
+    key: "2021_Y9_G",
+    year: 2021,
+    paper: "G",
+    label: "2021 Year 9 Mathematics Paper G",
+    questionCount: 40,
+    timeLimitMinutes: 60,
+    questionScript: "questions/2021_Y9_G_questions.js",
+    answerScript: "answers/2021_Y9_G_answers.js",
+    questionGlobal: "ICAS_2021_Y9_G_QUESTIONS",
+    answerGlobal: "ICAS_2021_Y9_G_ANSWERS"
+  }
+
 ];
