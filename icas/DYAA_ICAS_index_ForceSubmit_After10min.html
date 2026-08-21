@@ -27,14 +27,12 @@ h1{font-size:1.75rem;margin:0 0 18px}.card{border:1px solid var(--line);backgrou
 <iframe name="sheetSink" style="display:none"></iframe>
 <script src="catalog.js"></script>
 <script src="config.js"></script>
-<script src="student_grade_config.js"></script>
 <script>
 const CATALOG=window.ICAS_CATALOG||[];
 const CONFIG=window.DYAA_ICAS_CONFIG||{};
-const STUDENT_GRADE_CONFIG=window.DYAA_STUDENT_GRADE_CONFIG||{students:{}};
 const app=document.getElementById('app');
 const pageTitle=document.getElementById('pageTitle');
-let paper=null,questions=[],answers=[],studentName='',studentAccess=null;
+let paper=null,questions=[],answers=[],studentName='';
 let current=0,userAnswers=[],startMs=0,endMs=0,timerId=null,submitted=false,autoSubmitted=false;
 let paused=false,pauseStartedMs=0,totalPausedMs=0;
 let autoSubmitReason='',leaveSubmitSent=false;
@@ -54,84 +52,35 @@ function availableYears(){return [...new Set(CATALOG.map(p=>Number(p.year)))].so
 function availableGrades(){return [...new Set(CATALOG.map(p=>String(p.paper)))].sort((a,b)=>String(a).localeCompare(String(b)))}
 function papersForYear(year){return CATALOG.filter(p=>Number(p.year)===Number(year)).sort((a,b)=>String(a.paper).localeCompare(String(b.paper)))}
 function yearsForGrade(grade){return CATALOG.filter(p=>String(p.paper)===String(grade)).map(p=>Number(p.year)).filter((v,i,a)=>a.indexOf(v)===i).sort((a,b)=>b-a)}
-function normalizeStudentName(v){return String(v??'').normalize('NFKC').trim().replace(/\s+/g,' ').toLowerCase()}
-function configuredStudents(){return (STUDENT_GRADE_CONFIG&&STUDENT_GRADE_CONFIG.students&&typeof STUDENT_GRADE_CONFIG.students==='object')?STUDENT_GRADE_CONFIG.students:{}}
-function parseAllowedGrades(value){
-  if(value&&typeof value==='object'&&!Array.isArray(value))value=value.grades;
-  if(typeof value==='string')value=[value];
-  if(!Array.isArray(value))return [];
-  return value.map(v=>String(v).trim().toUpperCase()).filter(Boolean);
-}
-function lookupStudent(name){
-  const wanted=normalizeStudentName(name);if(!wanted)return null;
-  for(const [configuredName,value] of Object.entries(configuredStudents())){
-    if(normalizeStudentName(configuredName)===wanted)return {name:String(configuredName).trim(),grades:parseAllowedGrades(value)};
-  }
-  return null;
-}
-function allowedGradesFor(access){
-  const all=availableGrades();if(!access)return [];
-  if(access.grades.includes('ALL')||access.grades.includes('*'))return all;
-  return all.filter(g=>access.grades.includes(String(g).toUpperCase()));
-}
 function fillYearOptions(){
   const gradeSel=document.getElementById('gradeSelect'),yearSel=document.getElementById('yearSelect');
   if(!gradeSel||!yearSel)return;
   const years=yearsForGrade(gradeSel.value);
   yearSel.innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
 }
-function invalidateStudentAccess(){
-  studentAccess=null;studentName='';
-  const gradeSel=document.getElementById('gradeSelect'),yearSel=document.getElementById('yearSelect'),startBtn=document.getElementById('startBtn'),status=document.getElementById('accessStatus');
-  if(gradeSel){gradeSel.innerHTML='<option value="">Enter name first</option>';gradeSel.disabled=true}
-  if(yearSel){yearSel.innerHTML='<option value="">Enter name first</option>';yearSel.disabled=true}
-  if(startBtn)startBtn.disabled=true;
-  if(status){status.className='hint';status.textContent='Enter your name exactly as your teacher configured it, then press Show My Papers.'}
-}
-function applyStudentAccess(){
-  const input=document.getElementById('studentName'),gradeSel=document.getElementById('gradeSelect'),yearSel=document.getElementById('yearSelect'),startBtn=document.getElementById('startBtn'),status=document.getElementById('accessStatus');
-  const typed=(input?.value||'').trim();
-  if(!typed){invalidateStudentAccess();if(status){status.className='result-box bad';status.textContent='Student name is required.'}return}
-  const access=lookupStudent(typed);
-  if(!access){invalidateStudentAccess();if(status){status.className='result-box bad';status.textContent='Name not found. Please check the spelling or ask your teacher.'}return}
-  const grades=allowedGradesFor(access);
-  if(!grades.length){invalidateStudentAccess();if(status){status.className='result-box bad';status.textContent='Your name is recognised, but no available Grade has been assigned. Please ask your teacher.'}return}
-  studentAccess=access;studentName=access.name;
-  gradeSel.innerHTML=grades.map(g=>`<option value="${esc(g)}">Grade ${esc(g)}</option>`).join('');
-  gradeSel.disabled=false;yearSel.disabled=false;fillYearOptions();startBtn.disabled=false;
-  status.className='result-box good';status.innerHTML=`Welcome <strong>${esc(studentName)}</strong>. Available: <strong>${grades.map(g=>'Grade '+esc(g)).join(', ')}</strong>.`;
-}
-function showStart(){clearInterval(timerId);submitted=false;autoSubmitted=false;autoSubmitReason='';leaveSubmitSent=false;paused=false;pauseStartedMs=0;totalPausedMs=0;paper=null;studentName='';studentAccess=null;pageTitle.textContent='ICAS Mathematics Test';
+function showStart(){clearInterval(timerId);submitted=false;autoSubmitted=false;paused=false;pauseStartedMs=0;totalPausedMs=0;pageTitle.textContent='ICAS Mathematics Test';
   if(!CATALOG.length){app.innerHTML='<div class="card">No papers found in catalog.js.</div>';return}
+  const grades=availableGrades();
+  const gradeOptions=grades.map(g=>`<option value="${esc(g)}">Grade ${esc(g)}</option>`).join('');
   app.innerHTML=`<div class="card">
     <div class="grid3">
-      <div class="field"><label>Student Name</label><input id="studentName" placeholder="Enter student name" autocomplete="name"></div>
-      <div class="field"><label>Grade</label><select id="gradeSelect" disabled><option value="">Enter name first</option></select></div>
-      <div class="field"><label>Year</label><select id="yearSelect" disabled><option value="">Enter name first</option></select></div>
+      <div class="field"><label>Grade</label><select id="gradeSelect">${gradeOptions}</select></div>
+      <div class="field"><label>Year</label><select id="yearSelect"></select></div>
+      <div class="field"><label>Student Name</label><input id="studentName" placeholder="Enter student name"></div>
     </div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px"><button class="secondary blue" id="checkNameBtn">Show My Papers</button><div id="accessStatus" class="hint">Enter your name exactly as your teacher configured it, then press Show My Papers.</div></div>
-    <div class="rule"><strong>Exam format:</strong> one question at a time, one overall timer, and no answer checking during the test. Use <strong>Pause</strong> to stop the timer temporarily without changing questions.<br>Your Grade is assigned from your student name. After 10 minutes, leaving, refreshing or closing an unfinished test automatically submits the current answers.</div>
-    <button class="primary" id="startBtn" disabled>Start Test</button>
+    <div class="rule"><strong>Exam format:</strong> one question at a time, one overall timer, and no answer checking during the test. Use <strong>Pause</strong> to stop the timer temporarily without changing questions.<br>At the end, press <strong>Submit Test</strong> to calculate the overall score. The result includes the wrong question numbers and can be sent to the Google Sheet tab <strong>${esc(CONFIG.resultSheetName||'ICAS')}</strong>.</div>
+    <button class="primary" id="startBtn">Start Test</button>
   </div>`;
-  const nameInput=document.getElementById('studentName');
-  nameInput.oninput=invalidateStudentAccess;
-  nameInput.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();applyStudentAccess()}};
-  document.getElementById('checkNameBtn').onclick=applyStudentAccess;
   document.getElementById('gradeSelect').onchange=fillYearOptions;
+  fillYearOptions();
   document.getElementById('startBtn').onclick=startTest;
-  setTimeout(()=>nameInput.focus(),0);
 }
 
 async function startTest(){
-  const nameInput=document.getElementById('studentName');
-  const currentAccess=lookupStudent(nameInput?.value||'');
-  if(!currentAccess){applyStudentAccess();return}
-  const allowed=allowedGradesFor(currentAccess);
   const year=Number(document.getElementById('yearSelect').value);
   const grade=document.getElementById('gradeSelect').value;
-  if(!allowed.includes(String(grade))){applyStudentAccess();return}
-  studentAccess=currentAccess;studentName=currentAccess.name;
   paper=CATALOG.find(p=>Number(p.year)===year&&String(p.paper)===grade);
+  studentName=(document.getElementById('studentName').value||'Student').trim()||'Student';
   if(!paper){app.innerHTML='<div class="card bad">The selected Year and Grade could not be found.</div>';return}
   try{await loadScript(paper.questionScript);await loadScript(paper.answerScript)}catch(e){app.innerHTML=`<div class="card bad">${esc(e.message)}</div>`;return}
   questions=window[paper.questionGlobal]||[];answers=window[paper.answerGlobal]||[];
