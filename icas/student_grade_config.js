@@ -18,14 +18,13 @@ window.DYAA_STUDENT_GRADE_CONFIG = {
 	"Edison": "D",
 	"Eden": "B",
 	"EthanM": "B",
-    "Darron": ["B", "C"]
-    "Dorothy": ["E"]
+    "Darron": ["B", "C"],
+    "Dorothy": "E",
 	"Blake": "B",
 	"Brad": "E",
 	"Abigail": "E",
 	"AngelaD": "ALL",
 	"AlinaD": "ALL",
-	"AngelaD": "E",
     // "Ben Lee": "C",
     // "Chris Wang": ["D", "E"]
   }
