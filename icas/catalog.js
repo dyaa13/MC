@@ -6,8 +6,8 @@ window.ICAS_CATALOG = [
     label: "2018 Mathematics Paper E",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2018_E_questions.js",
-    answerScript: "answers/2018_E_answers.js",
+    questionScript: "gradeE/questions/2018_E_questions.js",
+    answerScript: "gradeE/answers/2018_E_answers.js",
     questionGlobal: "ICAS_2018_E_QUESTIONS",
     answerGlobal: "ICAS_2018_E_ANSWERS"
   },
@@ -18,8 +18,8 @@ window.ICAS_CATALOG = [
     label: "2020 Year 7 Mathematics Paper E",
     questionCount: 40,
     timeLimitMinutes: 60,
-    questionScript: "questions/2020_Y7_E_questions.js",
-    answerScript: "answers/2020_Y7_E_answers.js",
+    questionScript: "gradeE/questions/2020_Y7_E_questions.js",
+    answerScript: "gradeE/answers/2020_Y7_E_answers.js",
     questionGlobal: "ICAS_2020_Y7_E_QUESTIONS",
     answerGlobal: "ICAS_2020_Y7_E_ANSWERS"
   }
@@ -31,8 +31,8 @@ window.ICAS_CATALOG = [
     label: "2020 Year 6 Mathematics Paper D",
     questionCount: 40,
     timeLimitMinutes: 60,
-    questionScript: "questions/2020_Y6_D_questions.js",
-    answerScript: "answers/2020_Y6_D_answers.js",
+    questionScript: "gradeD/questions/2020_Y6_D_questions.js",
+    answerScript: "gradeD/answers/2020_Y6_D_answers.js",
     questionGlobal: "ICAS_2020_Y6_D_QUESTIONS",
     answerGlobal: "ICAS_2020_Y6_D_ANSWERS"
   },
@@ -43,8 +43,8 @@ window.ICAS_CATALOG = [
     label: "2022 Mathematics Grade B",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2022_B_questions.js",
-    answerScript: "answers/2022_B_answers.js",
+    questionScript: "gradeB/questions/2022_B_questions.js",
+    answerScript: "gradeB/answers/2022_B_answers.js",
     questionGlobal: "ICAS_2022_B_QUESTIONS",
     answerGlobal: "ICAS_2022_B_ANSWERS"
   }
@@ -55,8 +55,8 @@ window.ICAS_CATALOG = [
     label: "2005 Mathematics Grade C",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2005_C_questions.js",
-    answerScript: "answers/2005_C_answers.js",
+    questionScript: "gradeC/questions/2005_C_questions.js",
+    answerScript: "gradeC/answers/2005_C_answers.js",
     questionGlobal: "ICAS_2005_C_QUESTIONS",
     answerGlobal: "ICAS_2005_C_ANSWERS"
   }
@@ -68,8 +68,8 @@ window.ICAS_CATALOG = [
     label: "2021 Year 7 Mathematics Paper E",
     questionCount: 40,
     timeLimitMinutes: 60,
-    questionScript: "questions/2021_Y7_E_questions.js",
-    answerScript: "answers/2021_Y7_E_answers.js",
+    questionScript: "gradeE/questions/2021_Y7_E_questions.js",
+    answerScript: "gradeE/answers/2021_Y7_E_answers.js",
     questionGlobal: "ICAS_2021_Y7_E_QUESTIONS",
     answerGlobal: "ICAS_2021_Y7_E_ANSWERS"
   }
@@ -80,8 +80,8 @@ window.ICAS_CATALOG = [
     label: "2021 Year 4 Mathematics Paper B",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2021_Y4_B_questions.js",
-    answerScript: "answers/2021_Y4_B_answers.js",
+    questionScript: "gradeB/questions/2021_Y4_B_questions.js",
+    answerScript: "gradeB/answers/2021_Y4_B_answers.js",
     questionGlobal: "ICAS_2021_Y4_B_QUESTIONS",
     answerGlobal: "ICAS_2021_Y4_B_ANSWERS"
   }
@@ -93,8 +93,8 @@ window.ICAS_CATALOG = [
     label: "2019 Year 4 Mathematics Paper B",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2019_Y4_B_questions.js",
-    answerScript: "answers/2019_Y4_B_answers.js",
+    questionScript: "gradeB/questions/2019_Y4_B_questions.js",
+    answerScript: "gradeB/answers/2019_Y4_B_answers.js",
     questionGlobal: "ICAS_2019_Y4_B_QUESTIONS",
     answerGlobal: "ICAS_2019_Y4_B_ANSWERS"
   }
@@ -106,8 +106,8 @@ window.ICAS_CATALOG = [
     label: "2020 Year 4 Mathematics Paper B",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2020_Y4_B_questions.js",
-    answerScript: "answers/2020_Y4_B_answers.js",
+    questionScript: "gradeB/questions/2020_Y4_B_questions.js",
+    answerScript: "gradeB/answers/2020_Y4_B_answers.js",
     questionGlobal: "ICAS_2020_Y4_B_QUESTIONS",
     answerGlobal: "ICAS_2020_Y4_B_ANSWERS"
   }
@@ -119,8 +119,8 @@ window.ICAS_CATALOG = [
     label: "2009 Year 5 Mathematics Paper C",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2009_Y5_C_questions.js",
-    answerScript: "answers/2009_Y5_C_answers.js",
+    questionScript: "gradeC/questions/2009_Y5_C_questions.js",
+    answerScript: "gradeC/answers/2009_Y5_C_answers.js",
     questionGlobal: "ICAS_2009_Y5_C_QUESTIONS",
     answerGlobal: "ICAS_2009_Y5_C_ANSWERS"
   }
@@ -133,8 +133,8 @@ window.ICAS_CATALOG = [
     label: "2011 Year 5 Mathematics Paper C",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2011_Y5_C_questions.js",
-    answerScript: "answers/2011_Y5_C_answers.js",
+    questionScript: "gradeC/questions/2011_Y5_C_questions.js",
+    answerScript: "gradeC/answers/2011_Y5_C_answers.js",
     questionGlobal: "ICAS_2011_Y5_C_QUESTIONS",
     answerGlobal: "ICAS_2011_Y5_C_ANSWERS"
   }
@@ -147,8 +147,8 @@ window.ICAS_CATALOG = [
     label: "2012 Year 5 Mathematics Paper C",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2012_Y5_C_questions.js",
-    answerScript: "answers/2012_Y5_C_answers.js",
+    questionScript: "gradeC/questions/2012_Y5_C_questions.js",
+    answerScript: "gradeC/answers/2012_Y5_C_answers.js",
     questionGlobal: "ICAS_2012_Y5_C_QUESTIONS",
     answerGlobal: "ICAS_2012_Y5_C_ANSWERS"
   }
@@ -161,8 +161,8 @@ window.ICAS_CATALOG = [
     label: "2016 Year 5 Mathematics Paper C",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2016_Y5_C_questions.js",
-    answerScript: "answers/2016_Y5_C_answers.js",
+    questionScript: "gradeC/questions/2016_Y5_C_questions.js",
+    answerScript: "gradeC/answers/2016_Y5_C_answers.js",
     questionGlobal: "ICAS_2016_Y5_C_QUESTIONS",
     answerGlobal: "ICAS_2016_Y5_C_ANSWERS"
   }
@@ -175,8 +175,8 @@ window.ICAS_CATALOG = [
     label: "2019 Year 5 Mathematics Paper C",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2019_Y5_C_questions.js",
-    answerScript: "answers/2019_Y5_C_answers.js",
+    questionScript: "gradeC/questions/2019_Y5_C_questions.js",
+    answerScript: "gradeC/answers/2019_Y5_C_answers.js",
     questionGlobal: "ICAS_2019_Y5_C_QUESTIONS",
     answerGlobal: "ICAS_2019_Y5_C_ANSWERS"
   }
@@ -188,11 +188,25 @@ window.ICAS_CATALOG = [
     label: "2020 Year 5 Mathematics Paper C",
     questionCount: 40,
     timeLimitMinutes: 45,
-    questionScript: "questions/2020_Y5_C_questions.js",
-    answerScript: "answers/2020_Y5_C_answers.js",
+    questionScript: "gradeC/questions/2020_Y5_C_questions.js",
+    answerScript: "gradeC/answers/2020_Y5_C_answers.js",
     questionGlobal: "ICAS_2020_Y5_C_QUESTIONS",
     answerGlobal: "ICAS_2020_Y5_C_ANSWERS"
   }
+
+  ,{
+    key: "2018_Y6_D",
+    year: 2018,
+    paper: "D",
+    label: "2018 Year 6 Mathematics Paper D",
+    questionCount: 40,
+    timeLimitMinutes: 60,
+    questionScript: "gradeD/questions/2018_Y6_D_questions.js",
+    answerScript: "gradeD/answers/2018_Y6_D_answers.js",
+    questionGlobal: "ICAS_2018_Y6_D_QUESTIONS",
+    answerGlobal: "ICAS_2018_Y6_D_ANSWERS"
+  }
+
 
   ,{
     key: "2019_Y6_D",
@@ -201,8 +215,8 @@ window.ICAS_CATALOG = [
     label: "2019 Year 6 Mathematics Paper D",
     questionCount: 40,
     timeLimitMinutes: 60,
-    questionScript: "questions/2019_Y6_D_questions.js",
-    answerScript: "answers/2019_Y6_D_answers.js",
+    questionScript: "gradeD/questions/2019_Y6_D_questions.js",
+    answerScript: "gradeD/answers/2019_Y6_D_answers.js",
     questionGlobal: "ICAS_2019_Y6_D_QUESTIONS",
     answerGlobal: "ICAS_2019_Y6_D_ANSWERS"
   }
@@ -214,8 +228,8 @@ window.ICAS_CATALOG = [
     label: "2021 Year 6 Mathematics Paper D",
     questionCount: 40,
     timeLimitMinutes: 60,
-    questionScript: "questions/2021_Y6_D_questions.js",
-    answerScript: "answers/2021_Y6_D_answers.js",
+    questionScript: "gradeD/questions/2021_Y6_D_questions.js",
+    answerScript: "gradeD/answers/2021_Y6_D_answers.js",
     questionGlobal: "ICAS_2021_Y6_D_QUESTIONS",
     answerGlobal: "ICAS_2021_Y6_D_ANSWERS"
   }
@@ -227,8 +241,8 @@ window.ICAS_CATALOG = [
     label: "2019 Year 9 Mathematics Paper G",
     questionCount: 39,
     timeLimitMinutes: 60,
-    questionScript: "questions/2019_Y9_G_questions.js",
-    answerScript: "answers/2019_Y9_G_answers.js",
+    questionScript: "gradeG/questions/2019_Y9_G_questions.js",
+    answerScript: "gradeG/answers/2019_Y9_G_answers.js",
     questionGlobal: "ICAS_2019_Y9_G_QUESTIONS",
     answerGlobal: "ICAS_2019_Y9_G_ANSWERS"
   }
@@ -241,8 +255,8 @@ window.ICAS_CATALOG = [
     label: "2020 Year 9 Mathematics Paper G",
     questionCount: 40,
     timeLimitMinutes: 60,
-    questionScript: "questions/2020_Y9_G_questions.js",
-    answerScript: "answers/2020_Y9_G_answers.js",
+    questionScript: "gradeG/questions/2020_Y9_G_questions.js",
+    answerScript: "gradeG/answers/2020_Y9_G_answers.js",
     questionGlobal: "ICAS_2020_Y9_G_QUESTIONS",
     answerGlobal: "ICAS_2020_Y9_G_ANSWERS"
   }
@@ -254,8 +268,8 @@ window.ICAS_CATALOG = [
     label: "2021 Year 9 Mathematics Paper G",
     questionCount: 40,
     timeLimitMinutes: 60,
-    questionScript: "questions/2021_Y9_G_questions.js",
-    answerScript: "answers/2021_Y9_G_answers.js",
+    questionScript: "gradeG/questions/2021_Y9_G_questions.js",
+    answerScript: "gradeG/answers/2021_Y9_G_answers.js",
     questionGlobal: "ICAS_2021_Y9_G_QUESTIONS",
     answerGlobal: "ICAS_2021_Y9_G_ANSWERS"
   }

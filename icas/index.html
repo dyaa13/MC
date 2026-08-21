@@ -54,7 +54,7 @@ function availableYears(){return [...new Set(CATALOG.map(p=>Number(p.year)))].so
 function availableGrades(){return [...new Set(CATALOG.map(p=>String(p.paper)))].sort((a,b)=>String(a).localeCompare(String(b)))}
 function papersForYear(year){return CATALOG.filter(p=>Number(p.year)===Number(year)).sort((a,b)=>String(a.paper).localeCompare(String(b.paper)))}
 function yearsForGrade(grade){return CATALOG.filter(p=>String(p.paper)===String(grade)).map(p=>Number(p.year)).filter((v,i,a)=>a.indexOf(v)===i).sort((a,b)=>b-a)}
-function normalizeStudentName(v){return String(v??'').normalize('NFKC').trim().replace(/\s+/g,' ').toLowerCase()}
+function normalizeStudentName(v){return String(v??'').normalize('NFKC').toLowerCase()}
 function configuredStudents(){return (STUDENT_GRADE_CONFIG&&STUDENT_GRADE_CONFIG.students&&typeof STUDENT_GRADE_CONFIG.students==='object')?STUDENT_GRADE_CONFIG.students:{}}
 function parseAllowedGrades(value){
   if(value&&typeof value==='object'&&!Array.isArray(value))value=value.grades;
@@ -86,12 +86,12 @@ function invalidateStudentAccess(){
   if(gradeSel){gradeSel.innerHTML='<option value="">Enter name first</option>';gradeSel.disabled=true}
   if(yearSel){yearSel.innerHTML='<option value="">Enter name first</option>';yearSel.disabled=true}
   if(startBtn)startBtn.disabled=true;
-  if(status){status.className='hint';status.textContent='Enter your name exactly as your teacher configured it, then press Show My Papers.'}
+  if(status){status.className='hint';status.textContent='Enter your student code exactly, then press Show My Papers.'}
 }
 function applyStudentAccess(){
   const input=document.getElementById('studentName'),gradeSel=document.getElementById('gradeSelect'),yearSel=document.getElementById('yearSelect'),startBtn=document.getElementById('startBtn'),status=document.getElementById('accessStatus');
-  const typed=(input?.value||'').trim();
-  if(!typed){invalidateStudentAccess();if(status){status.className='result-box bad';status.textContent='Student name is required.'}return}
+  const typed=(input?.value||'');
+  if(!typed){invalidateStudentAccess();if(status){status.className='result-box bad';status.textContent='Student code is required.'}return}
   const access=lookupStudent(typed);
   if(!access){invalidateStudentAccess();if(status){status.className='result-box bad';status.textContent='Name not found. Please check the spelling or ask your teacher.'}return}
   const grades=allowedGradesFor(access);
@@ -105,12 +105,12 @@ function showStart(){clearInterval(timerId);submitted=false;autoSubmitted=false;
   if(!CATALOG.length){app.innerHTML='<div class="card">No papers found in catalog.js.</div>';return}
   app.innerHTML=`<div class="card">
     <div class="grid3">
-      <div class="field"><label>Student Name</label><input id="studentName" placeholder="Enter student name" autocomplete="name"></div>
+      <div class="field"><label>Student Code</label><input id="studentName" placeholder="Enter student code" autocomplete="off" autocapitalize="none" spellcheck="false"></div>
       <div class="field"><label>Grade</label><select id="gradeSelect" disabled><option value="">Enter name first</option></select></div>
       <div class="field"><label>Year</label><select id="yearSelect" disabled><option value="">Enter name first</option></select></div>
     </div>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px"><button class="secondary blue" id="checkNameBtn">Show My Papers</button><div id="accessStatus" class="hint">Enter your name exactly as your teacher configured it, then press Show My Papers.</div></div>
-    <div class="rule"><strong>Exam format:</strong> one question at a time, one overall timer, and no answer checking during the test. Use <strong>Pause</strong> to stop the timer temporarily without changing questions.<br>Your Grade is assigned from your student name. After 10 minutes, leaving, refreshing or closing an unfinished test automatically submits the current answers.</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px"><button class="secondary blue" id="checkNameBtn">Show My Papers</button><div id="accessStatus" class="hint">Enter your student code exactly, then press Show My Papers.</div></div>
+    <div class="rule"><strong>Exam format:</strong> one question at a time, one overall timer, and no answer checking during the test. Use <strong>Pause</strong> to stop the timer temporarily without changing questions.<br>Your Grade is assigned from your student code. After 10 minutes, leaving, refreshing or closing an unfinished test automatically submits the current answers.</div>
     <button class="primary" id="startBtn" disabled>Start Test</button>
   </div>`;
   const nameInput=document.getElementById('studentName');
