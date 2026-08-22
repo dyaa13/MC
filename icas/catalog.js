@@ -273,5 +273,17 @@ window.ICAS_CATALOG = [
     questionGlobal: "ICAS_2021_Y9_G_QUESTIONS",
     answerGlobal: "ICAS_2021_Y9_G_ANSWERS"
   }
+  ,{
+    key: "2017_Y4_B",
+    year: 2017,
+    paper: "B",
+    label: "2017 Mathematics Grade B",
+    questionCount: 40,
+    timeLimitMinutes: 45,
+    questionScript: "gradeB/questions/2017_Y4_B_questions.js",
+    answerScript: "gradeB/answers/2017_Y4_B_answers.js",
+    questionGlobal: "ICAS_2017_Y4_B_QUESTIONS",
+    answerGlobal: "ICAS_2017_Y4_B_ANSWERS"
+  }
 
 ];
